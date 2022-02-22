@@ -1,0 +1,79 @@
+name: Build Skia x-plat
+on: [push]
+jobs:
+  build_skia_64:
+    runs-on: [self-hosted, linux, x64]
+    container: jameswalmsley/skiabuild:latest
+    steps:
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Build Skia
+        run: |
+          make skia_defconfig
+          make source-checkout -j$(nproc)
+          make
+          
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - uses: actions/upload-artifact@v3
+        with:
+          name: libskia-x86_64-linux-gnu
+          path: out/skia/sysroot.tar.gz
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: libskia-x86-linux-gnu
+      #     path: out/skia/sysroot.tar.gz
+
+
+  test_skia_archlinux:
+    runs-on: ubuntu-latest
+    needs: build_skia_64
+    container: archlinux:latest
+    steps:
+      - run: echo "Testing skia shim on archlinux"
+
+  test_skia_fedora:
+    runs-on: ubuntu-latest
+    needs: build_skia_64
+    container: fedora:latest
+    steps:
+      - run: echo "Testing skia shim on archlinux"
+
+  test_skia_debian:
+    runs-on: ubuntu-latest
+    needs: build_skia_64
+    container: debian:latest
+    steps:
+      - run: echo "Testing skia shim on archlinux"
+
+  test_skia_alpine:
+    runs-on: ubuntu-latest
+    needs: build_skia_64
+    container: alpine:latest
+    steps:
+      - run: echo "Testing skia shim on archlinux"
+
+  release_libskia:
+    needs: [build_skia_64]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        if: startsWith(github.ref, 'refs/tags/v')
+
+      - run: ls -R
+        if: startsWith(github.ref, 'refs/tags/v')
+
+      - run: tar cvzf avalonia.skialibs.tar.gz *
+        if: startsWith(github.ref, 'refs/tags/v')
+
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          files: |
+            avalonia.skia.sysroots.tar.gz
+
+

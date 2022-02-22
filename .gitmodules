@@ -1,0 +1,3 @@
+[submodule "ve-root"]
+	path = ve-root
+	url = https://github.com/jameswalmsley/ve-root
