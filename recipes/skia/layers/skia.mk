@@ -65,6 +65,5 @@ $(skia_install): $(skia)
 $(skia_pkgconfig): $(skia_install)
 	cp $(BASE_skia)/skia.pc.in $@
 
-
 $(L).clean:
 	rm -rf $(builddir)

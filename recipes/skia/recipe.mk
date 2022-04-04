@@ -22,13 +22,15 @@ endif
 
 export LIBRARY_PATH="$(SYSROOT)/$(PREFIX)/$(LIBDIR):$(SYSROOT)/usr/lib64"
 
+BUILD_JOBS:=-j$(shell nproc)
+
 ifneq ($(shell which distcc 2> /dev/null),)
 ifdef DISTCC_HOSTS
 export CC:=distcc $(CC)
 export CXX:=distcc $(CXX)
 export CLANG:=distcc $(CLANG)
 export CLANGXX:=distcc $(CLANGXX)
-BUILD_JOBS=-j $$(distcc -j)
+BUILD_JOBS=-j$$(distcc -j)
 endif
 endif
 

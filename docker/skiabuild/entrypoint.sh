@@ -8,5 +8,5 @@ usermod -a -G wheel ${CURRENT_USER}
 echo "root   ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 echo "${CURRENT_USER}   ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-exec sudo -i -u ${CURRENT_USER} /userentry.sh ${CURRENT_DIR} $@
+exec sudo -E -u ${CURRENT_USER} /userentry.sh ${CURRENT_DIR} $@
 

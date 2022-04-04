@@ -17,6 +17,7 @@ services:
       - CURRENT_GID
       - CURRENT_USER
       - CURRENT_DIR
+      - DISTCC_HOSTS
       - TERM=xterm-256color
     hostname: skiabuild
     stdin_open: true
