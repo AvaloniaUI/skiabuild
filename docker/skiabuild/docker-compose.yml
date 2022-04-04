@@ -85,3 +85,28 @@ services:
     entrypoint: /entrypoint.sh
     working_dir: /work
 
+  skiatest_alpine:
+    build:
+      context: .
+      dockerfile: skiatest-alpine.Dockerfile
+    image: jameswalmsley/skiatest:alpine
+    volumes:
+      - /home/${CURRENT_USER}:/home/${CURRENT_USER}
+      - ./entrypoint.sh:/entrypoint.sh
+      - ./userentry.sh:/userentry.sh
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev:/dev
+      - /tmp:/tmp
+    environment:
+      - DISPLAY
+      - CURRENT_UID
+      - CURRENT_GID
+      - CURRENT_USER
+      - CURRENT_DIR
+      - TERM=xterm-256color
+    hostname: skiatest
+    stdin_open: true
+    tty: true
+    privileged: true
+    entrypoint: /entrypoint.sh
+    working_dir: /work

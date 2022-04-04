@@ -1,11 +1,20 @@
 include $(DEFINE_RECIPE)
 SYSROOT?=$(OUT)/sysroot
 
+ifeq ($(CC),cc)
 export CC:=gcc-10
 export CXX:=g++-10
+endif
 
-PREFIX=usr/local
-LIBDIR=lib64
+HOST:=$(shell $(CC) -dumpmachine)
+
+PREFIX:=usr/local
+LIBDIR:=lib
+
+ifeq ($(HOST),x86_64-linux-gnu)
+LIBDIR:=lib64
+endif
+
 export LIBRARY_PATH="$(SYSROOT)/$(PREFIX)/$(LIBDIR):$(SYSROOT)/usr/lib64"
 
 ifneq ($(shell which distcc 2> /dev/null),)
