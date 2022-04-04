@@ -1,6 +1,10 @@
 name: Build Skia x-plat
 on: [push]
 jobs:
+  env:
+    runs-on: [self-hosted, linux, x64]
+    steps:
+      - run: printenv
   build_skia_64:
     runs-on: [self-hosted, linux, x64]
     container: jameswalmsley/skiabuild:latest
@@ -14,7 +18,7 @@ jobs:
         run: |
           make skia_defconfig
           make source-checkout -j$(nproc)
-          make
+          DISTCC_HOSTS="${{ secrets.DISTCC_HOSTS }}" make
           
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - uses: actions/upload-artifact@v3
