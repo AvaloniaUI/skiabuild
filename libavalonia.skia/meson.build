@@ -17,7 +17,7 @@ cpp = meson.get_compiler('cpp')
 lib = shared_library(
    'avalonia.skia',
    ['testlib.cpp'],
-   dependencies: [fc_dep, gl_dep, sk_dep],
+   dependencies: [fc_dep, sk_dep],
    install: true,
 )
 
