@@ -30,30 +30,62 @@ jobs:
   test_skia_archlinux:
     runs-on: ubuntu-latest
     needs: build_skia_64
-    container: archlinux:latest
+    container: jameswalmsley/skiatest:archlinux
     steps:
+      - uses: actions/download-artifact@v3
       - run: echo "Testing skia shim on archlinux"
-
-  test_skia_fedora:
-    runs-on: ubuntu-latest
-    needs: build_skia_64
-    container: fedora:latest
-    steps:
-      - run: echo "Testing skia shim on archlinux"
+      - name: Test skialib with testprog
+        run: |
+          mkdir out
+          cd out && tar xvf ../libskia-x86_64-linux-gnu/sysroot.tar.gz
+          LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ./usr/local/bin/testprog
+          md5sum *.png
 
   test_skia_debian:
     runs-on: ubuntu-latest
     needs: build_skia_64
-    container: debian:latest
+    container: jameswalmsley/skiatest:debian
     steps:
-      - run: echo "Testing skia shim on archlinux"
+      - uses: actions/download-artifact@v3
+      - run: echo "Testing skia shim on debian"
+      - name: Test skialib with testprog
+        run: |
+          mkdir out
+          cd out && tar xvf ../libskia-x86_64-linux-gnu/sysroot.tar.gz
+          LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ./usr/local/bin/testprog
+          md5sum *.png
 
-  test_skia_alpine:
-    runs-on: ubuntu-latest
-    needs: build_skia_64
-    container: alpine:latest
-    steps:
-      - run: echo "Testing skia shim on archlinux"
+  # test_skia_fedora:
+  #   runs-on: ubuntu-latest
+  #   needs: build_skia_64
+  #   container: fedora:latest
+  #   steps:
+  #     - uses: actions/download-artifact@v3
+  #     - run: echo "Testing skia shim on fedora"
+  #     - name: Test skialib with testprog
+  #       run: |
+  #         mkdir out
+  #         cd out && tar xvf ../libskia-x86_64-linux-gnu/sysroot.tar.gz
+  #         ls -la && pwd
+  #         ls -la ./usr/local/bin
+  #         LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ./usr/local/bin/testprog
+
+
+  # test_skia_alpine:
+  #   runs-on: ubuntu-latest
+  #   needs: build_skia_64
+  #   container: alpine:latest
+  #   steps:
+  #     - uses: actions/download-artifact@v3
+  #     - run: echo "Testing skia shim on alpine linux"
+  #     - name: Test skialib with testprog
+  #       run: |
+  #         mkdir out
+  #         cd out && tar xvf ../libskia-x86_64-linux-gnu/sysroot.tar.gz
+  #         ls -la && pwd
+  #         ls -la ./usr/local/bin
+  #         LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ./usr/local/bin/testprog
+
 
   release_libskia:
     needs: [build_skia_64]

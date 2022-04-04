@@ -7,7 +7,7 @@ skia:=$(LSTAMP)/skia
 skia_sync_deps:=$(LSTAMP)/skia_sync_deps
 skia_config:=$(LSTAMP)/skia_config
 skia_install:=$(LSTAMP)/skia_install
-skia_pkgconfig:=$(LSTAMP)/skia_pkgconfig
+skia_pkgconfig:=$(SYSROOT)/$(PREFIX)/$(LIBDIR)/pkgconfig/skia.pc
 
 $(call git_clone, skia, https://github.com/google/skia.git, $(SKIA_GIT_REF))
 
@@ -63,7 +63,7 @@ $(skia_install): $(skia)
 	$(stamp)
 
 $(skia_pkgconfig): $(skia_install)
-	cp $(BASE_skia)/skia.pc.in $(SYSROOT)/usr/local/lib64/pkgconfig/skia.pc
+	cp $(BASE_skia)/skia.pc.in $@
 
 
 $(L).clean:

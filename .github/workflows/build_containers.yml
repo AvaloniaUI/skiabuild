@@ -5,7 +5,7 @@ on:
       - 'docker/**'
       - '.github/workflows/build_containers.yml'
 jobs:
-  build_skiabuild-64:
+  build_skiabuild:
     runs-on: [self-hosted, linux, x64]
     container: jameswalmsley/container-builder:latest
     steps:
@@ -19,7 +19,7 @@ jobs:
           username: ${{ secrets.JAMES_DOCKER_HUB_USERNAME }}
           password: ${{ secrets.JAMES_DOCKER_HUB_PASSWORD }}
 
-      - name: Build and push
+      - name: Build skiabuild:latest
         uses: docker/build-push-action@v2
         with:
           context: docker/skiabuild
@@ -27,3 +27,42 @@ jobs:
           push: true
           tags: jameswalmsley/skiabuild:latest
 
+
+
+  build_skiatest-archlinux:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.JAMES_DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.JAMES_DOCKER_HUB_PASSWORD }}
+      - name: Build skiatest:archlinux
+        uses: docker/build-push-action@v2
+        with:
+          context: docker/skiabuild
+          file: docker/skiabuild/skiatest-archlinux.Dockerfile
+          push: true
+          tags: jameswalmsley/skiatest:archlinux
+
+  build_skiatest-debian:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.JAMES_DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.JAMES_DOCKER_HUB_PASSWORD }}
+      - name: Build skiatest:debian
+        uses: docker/build-push-action@v2
+        with:
+          context: docker/skiabuild
+          file: docker/skiabuild/skiatest-debian.Dockerfile
+          push: true
+          tags: jameswalmsley/skiatest:debian
