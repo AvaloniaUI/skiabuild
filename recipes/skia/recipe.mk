@@ -1,5 +1,14 @@
 include $(DEFINE_RECIPE)
-SYSROOT?=$(OUT)/sysroot
+
+#
+# SYSROOT is the staging sysroot which we use to build our static libskia against.
+#
+SYSROOT?=$(OUT)/buildroot
+
+#
+# PKGROOT is where the distributable package / sysroot will be installed to.
+#
+PKGROOT?=$(OUT)/sysroot
 
 ifeq ($(CC),cc)
 ifneq ($(shell which gcc-10 2> /dev/null),)
@@ -45,3 +54,4 @@ LAYERS += sysroot/package
 
 include $(BUILD_RECIPE)
 
+$(sysroot-package): SYSROOT:=$(PKGROOT)

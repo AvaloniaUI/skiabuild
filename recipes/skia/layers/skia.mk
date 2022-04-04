@@ -57,9 +57,13 @@ $(skia): $(skia_config)
 	$(stamp)
 
 $(skia_install): $(skia)
-	mkdir -p $(SYSROOT)/usr/local/include/skia
-	cp -rv $(srcdir)/skia/include $(SYSROOT)/usr/local/include/skia
-	cp $(builddir)/skia/libskia.a $(SYSROOT)/usr/local/lib64/
+	mkdir -p $(SYSROOT)/$(PREFIX)/include/skia
+	mkdir -p $(PKGROOT)/$(PREFIX)/include/skia
+	mkdir -p $(PKGROOT)/$(PREFIX)/$(LIBDIR)
+	cp -rv $(srcdir)/skia/include $(SYSROOT)/$(PREFIX)/include/skia
+	cp -rv $(srcdir)/skia/include $(PKGROOT)/$(PREFIX)/include/skia
+	cp $(builddir)/skia/libskia.a $(SYSROOT)/$(PREFIX)/$(LIBDIR)/
+	cp $(builddir)/skia/libskia.a $(PKGROOT)/$(PREFIX)/$(LIBDIR)/
 	$(stamp)
 
 $(skia_pkgconfig): $(skia_install)

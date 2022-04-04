@@ -1,0 +1,6 @@
+FOO {
+    global:
+        do_draw;
+
+    local: *;         # hide everything else
+};

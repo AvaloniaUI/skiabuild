@@ -1,4 +1,10 @@
 BASE:=$(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+
+#
+# Specifies the default variant to be built.
+#
+CONFIG_VARIANT?=x86_64-linux-gnu
+
 include $(BASE)/ve-root/Makefile
 
 DOCKER_IMAGE:=skiabuild

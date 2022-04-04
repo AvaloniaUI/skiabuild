@@ -33,17 +33,6 @@ total 38724
 drwxr-xr-x 1 james james      424 Apr  4 19:20 ./
 drwxr-xr-x 1 james james       46 Apr  4 17:57 ../
 -rwxr-xr-x 1 james james 10858032 Apr  4 19:20 libavalonia.skia.so*
-lrwxrwxrwx 1 james james       18 Apr  4 17:57 libfontconfig.so -> libfontconfig.so.1*
-lrwxrwxrwx 1 james james       23 Apr  4 17:57 libfontconfig.so.1 -> libfontconfig.so.1.13.0*
--rwxr-xr-x 1 james james   396800 Apr  4 17:57 libfontconfig.so.1.13.0*
--rw-r--r-- 1 james james  1098948 Apr  4 17:33 libfreetype.a
-lrwxrwxrwx 1 james james       16 Apr  4 17:33 libfreetype.so -> libfreetype.so.6*
-lrwxrwxrwx 1 james james       21 Apr  4 17:33 libfreetype.so.6 -> libfreetype.so.6.18.2*
--rwxr-xr-x 1 james james   896136 Apr  4 17:33 libfreetype.so.6.18.2*
--rw-r--r-- 1 james james   393354 Apr  4 17:33 libpng16.a
-lrwxrwxrwx 1 james james       14 Apr  4 17:33 libpng16.so -> libpng16.so.16*
-lrwxrwxrwx 1 james james       19 Apr  4 17:33 libpng16.so.16 -> libpng16.so.16.37.0*
--rwxr-xr-x 1 james james   306520 Apr  4 17:33 libpng16.so.16.37.0*
 -rw-r--r-- 1 james james 25665680 Apr  4 19:18 libskia.a
 drwxr-xr-x 1 james james      104 Apr  4 19:18 pkgconfig/
 ```

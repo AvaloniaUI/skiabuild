@@ -24,7 +24,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: libskia-x86_64-linux-gnu
-          path: out/skia/sysroot.tar.gz
+          path: out/skia/x86_64-linux-gnu/sysroot.tar.gz
       # - uses: actions/upload-artifact@v3
       #   with:
       #     name: libskia-x86-linux-gnu
@@ -43,6 +43,7 @@ jobs:
           mkdir out
           cd out && tar xf ../libskia-x86_64-linux-gnu/sysroot.tar.gz
           LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ./usr/local/bin/avalonia.skia.testprog
+          LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ldd ./usr/local/bin/avalonia.skia.testprog
           md5sum *.png
 
   test_skia_debian:
@@ -57,6 +58,7 @@ jobs:
           mkdir out
           cd out && tar xf ../libskia-x86_64-linux-gnu/sysroot.tar.gz
           LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ./usr/local/bin/avalonia.skia.testprog
+          LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ldd ./usr/local/bin/avalonia.skia.testprog
           md5sum *.png
 
   # test_skia_fedora:
