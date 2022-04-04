@@ -3,21 +3,14 @@ project(
     ['c','cpp']
 )
 
-gl_dep = dependency('gl', required: true)
-fc_dep = dependency('fontconfig', static: true)
 sk_dep = dependency('skia', static: true)
 
 cpp = meson.get_compiler('cpp')
 
-# sk_dep = declare_dependency(
-#     dependencies : cpp.find_library('skia', dirs : meson.current_source_dir()+'/../out/skia/sysroot/usr/local/lib64'),
-#     include_directories : include_directories('../out/skia/sysroot/usr/local/include/skia')
-# )
-
 lib = shared_library(
    'avalonia.skia',
    ['testlib.cpp'],
-   dependencies: [fc_dep, sk_dep],
+   dependencies: [sk_dep],
    install: true,
 )
 

@@ -10,6 +10,6 @@ cachedir=${localstatedir}/cache/fontconfig
 Name: Skia
 Version: 1.0
 Description: Skia graphics library
-Libs: -L${libdir} -lskia -lGL
+Libs: -L${libdir} -lskia -lGL -lfontconfig -lpthread
 Cflags: -I${includedir}
 
