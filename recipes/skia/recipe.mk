@@ -2,9 +2,14 @@ include $(DEFINE_RECIPE)
 SYSROOT?=$(OUT)/sysroot
 
 ifeq ($(CC),cc)
+ifneq ($(shell which gcc-10 2> /dev/null),)
 export CC:=gcc-10
 export CXX:=g++-10
 endif
+endif
+
+CLANG?=clang-13
+CLANGXX?=clang++-13
 
 HOST:=$(shell $(CC) -dumpmachine)
 
@@ -21,6 +26,8 @@ ifneq ($(shell which distcc 2> /dev/null),)
 export DISTCC_HOSTS=10.1.0.16/4 10.1.0.24/32 10.1.0.40/20 10.1.0.48/16
 export CC:=distcc $(CC)
 export CXX:=distcc $(CXX)
+export CLANG:=distcc $(CLANG)
+export CLANGXX:=distcc $(CLANGXX)
 endif
 
 ifneq ($(shell which distcc 2> /dev/null),)
