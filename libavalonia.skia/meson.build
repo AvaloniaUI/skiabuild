@@ -7,16 +7,16 @@ sk_dep = dependency('skia', static: true)
 
 cpp = meson.get_compiler('cpp')
 
-lib = shared_library(
+avalonia_skia_lib = shared_library(
    'avalonia.skia',
-   ['testlib.cpp'],
+   ['avalonia.skia.cpp'],
    dependencies: [sk_dep],
    install: true,
 )
 
 testprog = executable(
-    'testprog',
+    'avalonia.skia.testprog',
     ['testprog.c'],
-    link_with: lib,
+    link_with: avalonia_skia_lib,
     install: true
 )

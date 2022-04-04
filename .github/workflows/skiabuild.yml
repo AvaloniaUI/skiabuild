@@ -38,11 +38,11 @@ jobs:
     steps:
       - uses: actions/download-artifact@v3
       - run: echo "Testing skia shim on archlinux"
-      - name: Test skialib with testprog
+      - name: Test skialib with avalonia.skia.testprog
         run: |
           mkdir out
           cd out && tar xf ../libskia-x86_64-linux-gnu/sysroot.tar.gz
-          LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ./usr/local/bin/testprog
+          LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ./usr/local/bin/avalonia.skia.testprog
           md5sum *.png
 
   test_skia_debian:
@@ -52,11 +52,11 @@ jobs:
     steps:
       - uses: actions/download-artifact@v3
       - run: echo "Testing skia shim on debian"
-      - name: Test skialib with testprog
+      - name: Test skialib with avalonia.skia.testprog
         run: |
           mkdir out
           cd out && tar xf ../libskia-x86_64-linux-gnu/sysroot.tar.gz
-          LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ./usr/local/bin/testprog
+          LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ./usr/local/bin/avalonia.skia.testprog
           md5sum *.png
 
   # test_skia_fedora:

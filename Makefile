@@ -8,5 +8,5 @@ CONTAINER?=skiabuild
 
 .PHONY:test
 test:
-	LD_LIBRARY_PATH=$(SYSROOT)/$(PREFIX)/$(LIBDIR) $(SYSROOT)/$(PREFIX)/bin/testprog
+	LD_LIBRARY_PATH=$(SYSROOT)/$(PREFIX)/$(LIBDIR) $(SYSROOT)/$(PREFIX)/bin/avalonia.skia.testprog
 
