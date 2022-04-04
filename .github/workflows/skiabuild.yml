@@ -37,7 +37,7 @@ jobs:
       - name: Test skialib with testprog
         run: |
           mkdir out
-          cd out && tar xvf ../libskia-x86_64-linux-gnu/sysroot.tar.gz
+          cd out && tar xf ../libskia-x86_64-linux-gnu/sysroot.tar.gz
           LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ./usr/local/bin/testprog
           md5sum *.png
 
@@ -51,7 +51,7 @@ jobs:
       - name: Test skialib with testprog
         run: |
           mkdir out
-          cd out && tar xvf ../libskia-x86_64-linux-gnu/sysroot.tar.gz
+          cd out && tar xf ../libskia-x86_64-linux-gnu/sysroot.tar.gz
           LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ./usr/local/bin/testprog
           md5sum *.png
 
@@ -94,10 +94,14 @@ jobs:
       - uses: actions/download-artifact@v3
         if: startsWith(github.ref, 'refs/tags/v')
 
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+
       - run: ls -R
         if: startsWith(github.ref, 'refs/tags/v')
 
-      - run: tar cvzf avalonia.skialibs.tar.gz *
+      - run: tar cvzf avalonia.skia-${{ steps.get_version.outputs.VERSION }}-sysroots.tar.gz *
         if: startsWith(github.ref, 'refs/tags/v')
 
 
@@ -106,6 +110,6 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           files: |
-            avalonia.skia.sysroots.tar.gz
+            avalonia.skia-${{ steps.get_version.outputs.VERSION }}-sysroots.tar.gz
 
 
