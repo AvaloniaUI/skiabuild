@@ -109,19 +109,6 @@ RUN git clone -v https://gn.googlesource.com/gn
 RUN cd gn && CC='distcc clang-13' CXX='distcc clang++-13' ./build/gen.py
 RUN cd gn/out && ninja -j$(distcc -j)
 
-RUN git clone --depth=1 https://gitlab.freedesktop.org/freetype/freetype.git
-WORKDIR /freetype
-RUN CC="distcc clang-13" CXX="distcc clang++-13" CFLAGS="-fPIC" meson build --buildtype=release && ninja -C build -j$(distcc -j)
-RUN ninja -C build install
-RUN DESTDIR=$(pwd)/out ninja -C build install
-
-WORKDIR /
-RUN git clone --depth=1 https://github.com/freedesktop/fontconfig.git
-WORKDIR /fontconfig
-RUN CC="distcc clang-13" CXX="distcc clang++-13" CFLAGS="-fPIC" meson build --buildtype=release -Dtests=disabled && ninja -C build -j$(distcc -j)
-RUN ninja -C build install
-RUN DESTDIR=$(pwd)/out ninja -C build install
-
 WORKDIR /
 RUN git clone -v --depth=1 https://github.com/distcc/distcc.git && cd distcc && ./autogen.sh && source /opt/rh/devtoolset-10/enable && ./configure && make -j$(nproc) && make DESTDIR=$(pwd)/out install
 
@@ -136,8 +123,6 @@ COPY --from=toolchains binutils-gdb/out/ /
 COPY --from=toolchains gcc/build/out/ /
 COPY --from=toolchains llvm-project/build/out/ /
 COPY --from=toolchains gn/out/gn /usr/local/bin/
-COPY --from=toolchains freetype/out/ /
-COPY --from=toolchains fontconfig/out/ /
 COPY --from=toolchains gn/out/gn /usr/bin/gn
 
 RUN yum -y install glibc-devel.i686
