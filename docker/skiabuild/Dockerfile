@@ -125,7 +125,7 @@ COPY --from=toolchains llvm-project/build/out/ /
 COPY --from=toolchains gn/out/gn /usr/local/bin/
 COPY --from=toolchains gn/out/gn /usr/bin/gn
 
-RUN yum -y install glibc-devel.i686
+RUN yum -y install glibc-devel.i686 pax-utils fontconfig
 
 RUN mkdir -p /usr/local/git/share/git-core/templates
 

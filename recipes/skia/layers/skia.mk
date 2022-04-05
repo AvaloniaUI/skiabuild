@@ -32,6 +32,7 @@ $(skia_sync_deps):
 SKIA_ARGS:=
 SKIA_ARGS += is_official_build=true
 SKIA_ARGS += skia_enable_tools=false
+SKIA_ARGS += extra_cflags=[\"-I$(SYSROOT)/$(PREFIX)/include\"]
 SKIA_ARGS += extra_ldflags=[\"-L$(SYSROOT)/$(PREFIX)/$(LIBDIR)\", \"-static-libstdc++\", \"-static-libgcc\" ]
 SKIA_ARGS += target_os=\"linux\" target_cpu=\"$(SKIA_ARCH)\"
 SKIA_ARGS += skia_use_icu=false
