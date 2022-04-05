@@ -46,6 +46,7 @@ SKIA_ARGS += skia_use_system_libwebp=false
 SKIA_ARGS += skia_use_system_zlib=false
 SKIA_ARGS += skia_use_x11=false
 SKIA_ARGS += skia_enable_gpu=true
+SKIA_ARGS += skia_use_vulkan=true
 SKIA_ARGS += cc=\"$(CLANG)\"
 SKIA_ARGS += cxx=\"$(CLANGXX)\"
 SKIA_ARGS += ar=\"$(AR)\"
