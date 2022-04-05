@@ -32,7 +32,7 @@ $(skia_sync_deps):
 SKIA_ARGS:=
 SKIA_ARGS += is_official_build=true
 SKIA_ARGS += skia_enable_tools=false
-SKIA_ARGS += extra_ldflags=[\"-L$(SYSROOT)/$(PREFIX)/$(LIBDIR)\"]
+SKIA_ARGS += extra_ldflags=[\"-L$(SYSROOT)/$(PREFIX)/$(LIBDIR)\", \"-static-libstdc++\", \"-static-libgcc\" ]
 SKIA_ARGS += target_os=\"linux\" target_cpu=\"$(SKIA_ARCH)\"
 SKIA_ARGS += skia_use_icu=false
 SKIA_ARGS += skia_use_sfntly=false
@@ -43,6 +43,7 @@ SKIA_ARGS += skia_use_system_libjpeg_turbo=false
 SKIA_ARGS += skia_use_system_libpng=false
 SKIA_ARGS += skia_use_system_libwebp=false
 SKIA_ARGS += skia_use_system_zlib=false
+SKIA_ARGS += skia_use_x11=false
 SKIA_ARGS += skia_enable_gpu=true
 SKIA_ARGS += cc=\"$(CLANG)\"
 SKIA_ARGS += cxx=\"$(CLANGXX)\"

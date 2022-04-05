@@ -32,7 +32,6 @@ RUN yum install -y  tar \
                     openssl-devel \
                     perl-devel \
                     zlib-devel \
-                    mesa-libGL-devel \
                     gperf \
                     gettext-devel \
                     expat-devel \
@@ -41,7 +40,9 @@ RUN yum install -y  tar \
                     flex \
                     bison \
                     texinfo \
-                    which
+                    which \
+                    pax-utils \
+                    make
 
 
 RUN pip3 install cmake ninja meson
@@ -65,7 +66,7 @@ RUN git clone --depth=1 -b binutils-2_38 https://github.com/bminor/binutils-gdb
 RUN mkdir -p binutils-gdb/build
 
 RUN cd binutils-gdb/build && ../configure CC='distcc gcc-4.8.5' CXX='distcc g++-4.8.5' --disable-shared --disable-gdb --disable-sim --disable-nls --enable-multilib --enable-multiarch
-ENV DISTCC_HOSTS="10.1.0.16/1 10.1.0.24/32 10.1.0.32/8 10.1.0.40/20 10.1.0.48/16"
+ENV DISTCC_HOSTS="10.1.0.16/4 10.1.0.24/32 10.1.0.40/20 10.1.0.48/20"
 RUN cd binutils-gdb/build && make -j$(distcc -j)
 RUN cd binutils-gdb/build && make install
 
@@ -90,7 +91,6 @@ RUN cd build && CC="distcc gcc-10" CXX="distcc g++-10" cmake \
                 -DLLVM_ENABLE_PROJECTS=clang \
                 -G "Ninja" ../llvm
 
-ENV DISTCC_HOSTS="10.1.0.16/8 10.1.0.24/14 10.1.0.40/20 10.1.0.48/16"
 RUN cd build && ninja -j$(distcc -j)
 RUN cd build && DESTDIR=$(pwd)/out ninja install
 RUN cd build && ninja install
@@ -140,7 +140,7 @@ COPY --from=toolchains freetype/out/ /
 COPY --from=toolchains fontconfig/out/ /
 COPY --from=toolchains gn/out/gn /usr/bin/gn
 
-RUN yum -y install mesa-libGL-devel.i686 glibc-devel.i686 make
+RUN yum -y install glibc-devel.i686
 
 RUN mkdir -p /usr/local/git/share/git-core/templates
 

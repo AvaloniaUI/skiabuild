@@ -12,9 +12,11 @@ pkg_check_modules(PKG_SKIA REQUIRED IMPORTED_TARGET skia)
 add_library(avalonia.skia SHARED avalonia.skia.cpp)
 target_include_directories(avalonia.skia PRIVATE ${PKG_SKIA_INCLUDE_DIRS})
 target_link_libraries(avalonia.skia PRIVATE PkgConfig::PKG_SKIA)
-set_target_properties(avalonia.skia PROPERTIES LINK_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/libavalonia.skia.version)
-set (CMAKE_SHARED_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS} "-Wl,--version-script=${CMAKE_SOURCE_DIR}/libavalonia.skia.version")
-
+target_link_options(avalonia.skia PRIVATE "-Wl,--version-script=${CMAKE_SOURCE_DIR}/libavalonia.skia.version")
+target_link_options(avalonia.skia PRIVATE "-static-libgcc")
+target_link_options(avalonia.skia PRIVATE "-static-libstdc++")
+target_compile_options(avalonia.skia PRIVATE "-static-libstdc++")
+target_compile_options(avalonia.skia PRIVATE "-static-libgcc")
 
 add_executable(avalonia.skia.testprog testprog.c)
 

@@ -3,13 +3,12 @@ include $(DEFINE_LAYER)
 
 avalonia_skia:=$(LSTAMP)/avalonia.skia
 avalonia_symbols:=$(PKGROOT)/libavalonia.skia.symbols
+avalonia_lddtree:=$(PKGROOT)/libavalonia.skia.lddtree
 avalonia_install:=$(LSTAMP)/avalonia_install
-
-#$(call meson_srcdir, avalonia_skia, $(BASE)/libavalonia.skia)
 
 $(L) += $(avalonia_skia)
 $(L) += $(avalonia_symbols)
-$(L) += $(avalonia_install)
+$(L) += $(avalonia_lddtree)
 
 DEPENDS += skia
 
@@ -27,6 +26,9 @@ $(avalonia_skia):
 
 $(avalonia_symbols): $(avalonia_skia)
 	nm $(PKGROOT)/$(PREFIX)/$(LIBDIR)/libavalonia.skia.so | grep '.*\sT\s.*$$' > $@
+
+$(avalonia_lddtree): $(avalonia_skia)
+	lddtree $(PKGROOT)/$(PREFIX)/$(LIBDIR)/libavalonia.skia.so > $@
 
 $(L).clean:
 	rm -rf $(builddir)
