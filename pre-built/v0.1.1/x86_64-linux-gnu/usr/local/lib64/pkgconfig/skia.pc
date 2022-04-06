@@ -1,0 +1,15 @@
+prefix=/usr/local
+libdir=${prefix}/lib64
+includedir=${prefix}/include/skia
+
+sysconfdir=/usr/local/etc
+localstatedir=/var/local
+confdir=${sysconfdir}/fonts
+cachedir=${localstatedir}/cache/fontconfig
+
+Name: Skia
+Version: 1.0
+Description: Skia graphics library
+Libs: -L${libdir} -lskia -lfontconfig -lpthread
+Cflags: -I${includedir}
+
