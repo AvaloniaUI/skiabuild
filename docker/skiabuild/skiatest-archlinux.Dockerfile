@@ -5,4 +5,8 @@ RUN pacman --noconfirm -Syu \
     libgl \
     make \
     which \
-    fontconfig
+    fontconfig \
+    cmake \
+    ninja \
+    pax-utils \
+    base-devel
