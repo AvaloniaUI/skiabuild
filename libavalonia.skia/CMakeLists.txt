@@ -3,8 +3,12 @@ project(avalonia.skia)
 
 find_package(PkgConfig)
 
-set(ENV{PKG_CONFIG_DIR} "")
-set(ENV{PKG_CONFIG_LIBDIR} "${PKGROOT}/usr/lib/pkgconfig:${PKGROOT}/usr/share/pkgconfig")
+if(NOT PKGROOT)
+    set(PKGROOT ${CMAKE_SOURCE_DIR}/../pre-built/v0.1.1/x86_64-linux-gnu)
+endif()
+
+set(ENV{PKG_CONFIG_PATH} ${PKGROOT}/usr/local/lib64/pkgconfig)
+set(ENV{PKG_CONFIG_LIBDIR} ${PKGROOT}/usr/lib/pkgconfig:${PKGROOT}/usr/share/pkgconfig)
 set(ENV{PKG_CONFIG_SYSROOT_DIR} ${PKGROOT})
 
 pkg_check_modules(PKG_SKIA REQUIRED IMPORTED_TARGET skia)
