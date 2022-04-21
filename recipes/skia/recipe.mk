@@ -20,6 +20,13 @@ endif
 CLANG?=clang-13
 CLANGXX?=clang++-13
 
+ifdef WINDOWS
+CLANG?=clang
+CLANGXX?=clang++
+CC=clang
+endif
+
+
 HOST:=$(shell $(CC) -dumpmachine)
 
 PREFIX:=usr/local
@@ -31,7 +38,9 @@ endif
 
 export LIBRARY_PATH="$(SYSROOT)/$(PREFIX)/$(LIBDIR):$(SYSROOT)/usr/lib64"
 
+ifndef WINDOWS
 BUILD_JOBS:=-j$(shell nproc)
+endif
 
 ifneq ($(shell which distcc 2> /dev/null),)
 ifdef DISTCC_HOSTS
@@ -45,12 +54,20 @@ endif
 
 MESON_OPTIONS:=
 
+
+ifndef WINDOWS
 LAYERS += meson
 LAYERS += freetype
 LAYERS += fontconfig
+endif
+
 LAYERS += skia
+
+ifndef WINDOWS
 LAYERS += avalonia_skia
 LAYERS += sysroot/package
+endif
+
 
 include $(BUILD_RECIPE)
 

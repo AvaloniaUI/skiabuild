@@ -1,10 +1,33 @@
 name: Build Skia x-plat
 on: [push]
 jobs:
-  env:
-    runs-on: [self-hosted, linux, x64]
+  # env:
+  #   runs-on: [self-hosted, linux, x64]
+  #   steps:
+  #     - run: printenv
+
+  build_windows:
+    runs-on: windows-latest
     steps:
-      - run: printenv
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+
+      - run: dir
+      - run: python3 -m pip install ninja
+      - run: ninja --version
+      - run: make skia_defconfig
+      - run: make source-checkout
+      - run: make CONFIG_VARIANT=win_x64
+      - run: Compress-Archive -Path out/skia/win_x64/sysroot/ skia-win64.zip
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - uses: actions/upload-artifact@v3
+        with:
+          name: libskia-win_x64
+          path: skia-win64.zip
+
   build_skia_64:
     runs-on: [self-hosted, linux, x64]
     container: jameswalmsley/skiabuild:latest
@@ -19,17 +42,12 @@ jobs:
           make skia_defconfig
           make source-checkout -j$(nproc)
           DISTCC_HOSTS="${{ secrets.DISTCC_HOSTS }}" make
-          
+         
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - uses: actions/upload-artifact@v3
         with:
           name: libskia-x86_64-linux-gnu
           path: out/skia/x86_64-linux-gnu/sysroot.tar.gz
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     name: libskia-x86-linux-gnu
-      #     path: out/skia/sysroot.tar.gz
-
 
   test_skia_archlinux:
     runs-on: ubuntu-latest
@@ -46,18 +64,18 @@ jobs:
           LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ldd ./usr/local/bin/avalonia.skia.testprog
           md5sum *.png
 
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v2
+      # - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      # - name: Check out repository code
+      #   uses: actions/checkout@v2
 
-      - name: Test build skialib against pre-built package
-        run: |
-          mkdir build && cd build
-          cmake -GNinja ../libavalonia.skia
-          ninja
-          lddtree ./avalonia.skia.testprog
-          ./avalonia.skia.testprog
-          md5sum *.png
+      # - name: Test build skialib against pre-built package
+      #   run: |
+      #     mkdir build && cd build
+      #     cmake -GNinja ../libavalonia.skia
+      #     ninja
+      #     lddtree ./avalonia.skia.testprog
+      #     ./avalonia.skia.testprog
+      #     md5sum *.png
 
 
   test_skia_debian:
@@ -108,7 +126,7 @@ jobs:
 
 
   release_libskia:
-    needs: [build_skia_64]
+    needs: [build_skia_64, build_windows, test_skia_archlinux, test_skia_debian]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v3
@@ -121,15 +139,17 @@ jobs:
       - run: ls -R
         if: startsWith(github.ref, 'refs/tags/v')
 
-      - run: tar cvzf avalonia.skia-${{ steps.get_version.outputs.VERSION }}-sysroots.tar.gz *
+      - run: mv libskia-x86_64-linux-gnu/sysroot.tar.gz avalonia.skia-${{ steps.get_version.outputs.VERSION }}-linux-x86_64-linux-gnu-sysroot.tar.gz
         if: startsWith(github.ref, 'refs/tags/v')
 
+      - run: mv libskia-win_x64/skia-win64.zip avalonia.skia-${{ steps.get_version.outputs.VERSION }}-win_x64-sysroot.zip
+        if: startsWith(github.ref, 'refs/tags/v')
 
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           files: |
-            avalonia.skia-${{ steps.get_version.outputs.VERSION }}-sysroots.tar.gz
-
+            avalonia.skia-*.zip
+            avalonia.skia-*.tar.gz
 
