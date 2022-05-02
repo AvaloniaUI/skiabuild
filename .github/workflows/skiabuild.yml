@@ -1,11 +1,6 @@
 name: Build Skia x-plat
 on: [push]
 jobs:
-  # env:
-  #   runs-on: [self-hosted, linux, x64]
-  #   steps:
-  #     - run: printenv
-
   build_wasm:
     runs-on: [self-hosted, linux, x64]
     container: jameswalmsley/skiabuild:wasm
@@ -26,7 +21,6 @@ jobs:
         with:
           name: libskia-wasm
           path: out/skia/wasm/sysroot.tar.gz
-
 
   build_windows:
     runs-on: windows-latest
@@ -50,7 +44,7 @@ jobs:
           name: libskia-win_x64
           path: skia-win64.zip
 
-  build_skia_64:
+  build_x86_64-linux-gnu:
     runs-on: [self-hosted, linux, x64]
     container: jameswalmsley/skiabuild:x86_64-linux-gnu
     steps:
@@ -64,7 +58,7 @@ jobs:
           make skia_defconfig
           make source-checkout -j$(nproc)
           DISTCC_HOSTS="${{ secrets.DISTCC_HOSTS }}" make
-         
+
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - uses: actions/upload-artifact@v3
         with:
@@ -73,7 +67,7 @@ jobs:
 
   test_skia_archlinux:
     runs-on: ubuntu-latest
-    needs: build_skia_64
+    needs: build_x86_64-linux-gnu
     container: jameswalmsley/skiatest:archlinux
     steps:
       - uses: actions/download-artifact@v3
@@ -102,7 +96,7 @@ jobs:
 
   test_skia_debian:
     runs-on: ubuntu-latest
-    needs: build_skia_64
+    needs: build_x86_64-linux-gnu
     container: jameswalmsley/skiatest:debian
     steps:
       - uses: actions/download-artifact@v3
@@ -117,7 +111,7 @@ jobs:
 
   # test_skia_fedora:
   #   runs-on: ubuntu-latest
-  #   needs: build_skia_64
+  #   needs: build_x86_64-linux-gnu
   #   container: fedora:latest
   #   steps:
   #     - uses: actions/download-artifact@v3
@@ -126,14 +120,13 @@ jobs:
   #       run: |
   #         mkdir out
   #         cd out && tar xvf ../libskia-x86_64-linux-gnu/sysroot.tar.gz
-  #         ls -la && pwd
-  #         ls -la ./usr/local/bin
-  #         LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ./usr/local/bin/testprog
-
+  #         LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ./usr/local/bin/avalonia.skia.testprog
+  #         LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ldd ./usr/local/bin/avalonia.skia.testprog
+  #         md5sum *.png
 
   # test_skia_alpine:
   #   runs-on: ubuntu-latest
-  #   needs: build_skia_64
+  #   needs: build_x86_64-linux-gnu
   #   container: alpine:latest
   #   steps:
   #     - uses: actions/download-artifact@v3
@@ -142,13 +135,12 @@ jobs:
   #       run: |
   #         mkdir out
   #         cd out && tar xvf ../libskia-x86_64-linux-gnu/sysroot.tar.gz
-  #         ls -la && pwd
-  #         ls -la ./usr/local/bin
-  #         LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ./usr/local/bin/testprog
-
+  #         LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ./usr/local/bin/avalonia.skia.testprog
+  #         LD_LIBRARY_PATH=$(pwd)/usr/local/lib64 ldd ./usr/local/bin/avalonia.skia.testprog
+  #         md5sum *.png
 
   release_libskia:
-    needs: [build_skia_64, build_windows, test_skia_archlinux, test_skia_debian]
+    needs: [build_x86_64-linux-gnu, build_windows, build_wasm, test_skia_archlinux, test_skia_debian]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v3
@@ -162,6 +154,9 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
 
       - run: mv libskia-x86_64-linux-gnu/sysroot.tar.gz avalonia.skia-${{ steps.get_version.outputs.VERSION }}-linux-x86_64-linux-gnu-sysroot.tar.gz
+        if: startsWith(github.ref, 'refs/tags/v')
+
+      - run: mv libskia-wasm/sysroot.tar.gz avalonia.skia-${{ steps.get_version.outputs.VERSION }}-wasm-sysroot.tar.gz
         if: startsWith(github.ref, 'refs/tags/v')
 
       - run: mv libskia-win_x64/skia-win64.zip avalonia.skia-${{ steps.get_version.outputs.VERSION }}-win_x64-sysroot.zip
