@@ -26,55 +26,21 @@ DEPENDS += fontconfig
 
 include $(BUILD_LAYER)
 
-ifdef WINDOWS
-SKIA_ARCH:=x64
-else
-SKIA_ARCH:=x86_64
-endif
+SKIA_ARCH?=x86_64
+SKIA_CC?=$(CLANG)
+SKIA_CXX?=$(CLANGXX)
+SKIA_AR?=$(AR)
 
 $(skia_sync_deps):
 	cd $(srcdir)/skia && python3 ./tools/git-sync-deps
 	$(stamp)
 
-SKIA_ARGS:=
-SKIA_ARGS += is_official_build=true
-SKIA_ARGS += skia_enable_tools=false
-SKIA_ARGS += target_cpu=\"$(SKIA_ARCH)\"
-ifndef WINDOWS
-SKIA_ARGS += target_os=\"linux\"
-SKIA_ARGS += extra_cflags=[\"-I$(SYSROOT)/$(PREFIX)/include\"]
-SKIA_ARGS += extra_ldflags=[\"-L$(SYSROOT)/$(PREFIX)/$(LIBDIR)\", \"-static-libstdc++\", \"-static-libgcc\" ]
-else
-SKIA_ARGS += target_os=\"win\"
-SKIA_ARGS += skia_use_dng_sdk=true
-SKIA_ARGS += skia_enable_fontmgr_win_gdi=false
-SKIA_ARGS += extra_cflags=[ \"-D_HAS_AUTO_PTR_ETC=1\" ] 
-endif
+include $(RECIPE)/skia-config-$(CONFIG_SKIACONFIG).mk
+SKIA_ARGS += cc=\"$(SKIA_CC)\"
+SKIA_ARGS += cxx=\"$(SKIA_CXX)\"
+SKIA_ARGS += ar=\"$(SKIA_AR)\"
 
-SKIA_ARGS += skia_use_icu=false
-SKIA_ARGS += skia_use_sfntly=false
-SKIA_ARGS += skia_use_piex=true
-SKIA_ARGS += skia_use_system_expat=false
-ifndef WINDOWS
-SKIA_ARGS += skia_use_system_freetype2=false
-endif
-SKIA_ARGS += skia_use_system_libjpeg_turbo=false
-SKIA_ARGS += skia_use_system_libpng=false
-SKIA_ARGS += skia_use_system_libwebp=false
-SKIA_ARGS += skia_use_system_zlib=false
-SKIA_ARGS += skia_use_x11=false
-SKIA_ARGS += skia_enable_gpu=true
-ifndef WINDOWS
-SKIA_ARGS += skia_use_vulkan=true
-SKIA_ARGS += cc=\"$(CLANG)\"
-SKIA_ARGS += cxx=\"$(CLANGXX)\"
-SKIA_ARGS += ar=\"$(AR)\"
-endif
-ifdef WINDOWS
-SKIA_ARGS += clang_win=\"c:\Program Files\LLVM\"
-endif
-
-GN:=gn
+GN?=gn
 
 ifdef WINDOWS
 GN:=./bin/gn

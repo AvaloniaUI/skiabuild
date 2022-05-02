@@ -2,3 +2,12 @@ CONFIG_RECIPE:=skia
 CONFIG_VARIANT:=wasm
 
 CONFIG_SYSROOT:=y
+CONFIG_SKIACONFIG:=wasm
+
+SKIA_CC:=emcc
+SKIA_CXX:=em++
+SKIA_AR:=emar
+
+GN:=./bin/gn
+
+
