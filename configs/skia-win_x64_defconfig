@@ -1,0 +1,6 @@
+CONFIG_RECIPE:=skia
+CONFIG_VARIANT:=win_x64
+CLANG:=clang
+CLANGXX:=clang++
+CC:=clang
+SKIA_ARCH:=x64

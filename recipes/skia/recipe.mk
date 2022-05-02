@@ -20,13 +20,6 @@ endif
 CLANG?=clang-13
 CLANGXX?=clang++-13
 
-ifdef WINDOWS
-CLANG?=clang
-CLANGXX?=clang++
-CC=clang
-endif
-
-
 HOST:=$(shell $(CC) -dumpmachine)
 
 PREFIX:=usr/local
@@ -54,20 +47,16 @@ endif
 
 MESON_OPTIONS:=
 
+LAYERS-$(CONFIG_MESON) += meson
+LAYERS-$(CONFIG_FREETYPE) += freetype
+LAYERS-$(CONFIG_FONTCONFIG) += fontconfig
 
-ifndef WINDOWS
-LAYERS += meson
-LAYERS += freetype
-LAYERS += fontconfig
-endif
+LAYERS-y += skia
 
-LAYERS += skia
+LAYERS-$(CONFIG_AVALONIA_SKIA) += avalonia_skia
+LAYERS-$(CONFIG_SYSROOT) += sysroot/package
 
-ifndef WINDOWS
-LAYERS += avalonia_skia
-LAYERS += sysroot/package
-endif
-
+LAYERS:=$(LAYERS-y)
 
 include $(BUILD_RECIPE)
 

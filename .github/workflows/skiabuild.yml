@@ -18,9 +18,9 @@ jobs:
       - run: dir
       - run: python3 -m pip install ninja
       - run: ninja --version
-      - run: make skia_defconfig
+      - run: make skia-win_x64_defconfig
       - run: make source-checkout
-      - run: make CONFIG_VARIANT=win_x64
+      - run: make
       - run: Compress-Archive -Path out/skia/win_x64/sysroot/ skia-win64.zip
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - uses: actions/upload-artifact@v3
