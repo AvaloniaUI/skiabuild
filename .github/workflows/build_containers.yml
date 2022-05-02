@@ -5,7 +5,7 @@ on:
       - 'docker/**'
       - '.github/workflows/build_containers.yml'
 jobs:
-  build_skiabuild:
+  build_skiabuild-x86_64-linux-gnu:
     runs-on: [self-hosted, linux, x64]
     container: jameswalmsley/container-builder:latest
     steps:
@@ -19,15 +19,35 @@ jobs:
           username: ${{ secrets.JAMES_DOCKER_HUB_USERNAME }}
           password: ${{ secrets.JAMES_DOCKER_HUB_PASSWORD }}
 
-      - name: Build skiabuild:latest
+      - name: Build skiabuild:x86_64-linux-gnu
         uses: docker/build-push-action@v2
         with:
           context: docker/skiabuild
           file: docker/skiabuild/Dockerfile
           push: true
-          tags: jameswalmsley/skiabuild:latest
+          tags: jameswalmsley/skiabuild:x86_64-linux-gnu
 
+  build_skiabuild-wasm:
+    runs-on: [self-hosted, linux, x64]
+    container: jameswalmsley/container-builder:latest
+    steps:
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v2
 
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.JAMES_DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.JAMES_DOCKER_HUB_PASSWORD }}
+
+      - name: Build skiabuild:wasm
+        uses: docker/build-push-action@v2
+        with:
+          context: docker/skiabuild
+          file: docker/skiabuild/wasm.Dockerfile
+          push: true
+          tags: jameswalmsley/skiabuild:wasm
 
   build_skiatest-archlinux:
     runs-on: ubuntu-latest

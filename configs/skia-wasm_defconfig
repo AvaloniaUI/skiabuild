@@ -4,6 +4,8 @@ CONFIG_VARIANT:=wasm
 CONFIG_SYSROOT:=y
 CONFIG_SKIACONFIG:=wasm
 
+DOCKER_SERVICE:=skiabuild-wasm
+
 SKIA_CC:=emcc
 SKIA_CXX:=em++
 SKIA_AR:=emar

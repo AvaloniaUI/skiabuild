@@ -35,7 +35,10 @@ $(skia_sync_deps):
 	cd $(srcdir)/skia && python3 ./tools/git-sync-deps
 	$(stamp)
 
+SKIA_ARGS += skia_enable_tools=false
+
 include $(RECIPE)/skia-config-$(CONFIG_SKIACONFIG).mk
+
 SKIA_ARGS += cc=\"$(SKIA_CC)\"
 SKIA_ARGS += cxx=\"$(SKIA_CXX)\"
 SKIA_ARGS += ar=\"$(SKIA_AR)\"

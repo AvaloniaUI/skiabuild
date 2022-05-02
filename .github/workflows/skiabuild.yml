@@ -6,6 +6,28 @@ jobs:
   #   steps:
   #     - run: printenv
 
+  build_wasm:
+    runs-on: [self-hosted, linux, x64]
+    container: jameswalmsley/skiabuild:wasm
+    steps:
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Build Skia
+        run: |
+          make skia-wasm_defconfig
+          make source-checkout -j$(nproc)
+          make
+         
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - uses: actions/upload-artifact@v3
+        with:
+          name: libskia-wasm
+          path: out/skia/wasm/sysroot.tar.gz
+
+
   build_windows:
     runs-on: windows-latest
     steps:
@@ -30,7 +52,7 @@ jobs:
 
   build_skia_64:
     runs-on: [self-hosted, linux, x64]
-    container: jameswalmsley/skiabuild:latest
+    container: jameswalmsley/skiabuild:x86_64-linux-gnu
     steps:
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code

@@ -32,4 +32,3 @@ SKIA_ARGS +=   \"-DSKNX_NO_SIMD\", \"-DSK_DISABLE_AAA\", \"-DGR_GL_CHECK_ALLOC_W
 SKIA_ARGS += ]
 SKIA_ARGS += extra_cflags_cc=[ \"-frtti\" ]
 
-
