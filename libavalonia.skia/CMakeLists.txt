@@ -4,7 +4,7 @@ project(avalonia.skia)
 find_package(PkgConfig)
 
 if(NOT PKGROOT)
-    set(PKGROOT ${CMAKE_SOURCE_DIR}/../pre-built/v0.1.1/x86_64-linux-gnu)
+    set(PKGROOT ${CMAKE_SOURCE_DIR}/pre-built)
 endif()
 
 set(ENV{PKG_CONFIG_PATH} ${PKGROOT}/usr/local/lib64/pkgconfig)
