@@ -13,6 +13,3 @@ SKIA_AR:=emar
 
 SKIA_ARCH:=wasm
 
-GN:=./bin/gn
-
-

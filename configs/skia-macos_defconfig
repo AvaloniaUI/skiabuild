@@ -5,4 +5,6 @@ CLANGXX:=clang++
 CC:=clang
 SKIA_ARCH:=x64
 
+CONFIG_SYSROOT:=y
 CONFIG_SKIACONFIG:=macos
+

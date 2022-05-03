@@ -53,11 +53,7 @@ SKIA_ARGS += cc=\"$(SKIA_CC)\"
 SKIA_ARGS += cxx=\"$(SKIA_CXX)\"
 SKIA_ARGS += ar=\"$(SKIA_AR)\"
 
-GN?=gn
-
-ifdef WINDOWS
-GN:=./bin/gn
-endif
+GN?=./bin/gn
 
 TC_SOURCE:=
 

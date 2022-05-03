@@ -31,9 +31,7 @@ endif
 
 export LIBRARY_PATH="$(SYSROOT)/$(PREFIX)/$(LIBDIR):$(SYSROOT)/usr/lib64"
 
-ifndef WINDOWS
-BUILD_JOBS:=-j$(shell nproc)
-endif
+BUILD_JOBS:=-j$(NPROC)
 
 ifneq ($(shell which distcc 2> /dev/null),)
 ifdef DISTCC_HOSTS

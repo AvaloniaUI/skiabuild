@@ -67,6 +67,9 @@ jobs:
 
   build_macos:
     runs-on: macos-latest
+    defaults:
+      run:
+        shell: bash
     steps:
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
@@ -75,10 +78,10 @@ jobs:
           submodules: 'recursive'
       - name: Build Skia
         run: |
+          brew install coreutils findutils grep ninja
           make skia-macos_defconfig
-          make info
-          make source-checkout -j$(sysctl -n hw.physicalcpu)
-          DISTCC_HOSTS="${{ secrets.DISTCC_HOSTS }}" make
+          make source-checkout
+          make
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - uses: actions/upload-artifact@v3
