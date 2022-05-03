@@ -1,6 +1,3 @@
-SKIA_ARGS += is_official_build=true
-SKIA_ARGS += skia_enable_tools=false
-SKIA_ARGS += target_cpu=\"$(SKIA_ARCH)\"
 SKIA_ARGS += target_os=\"win\"
 SKIA_ARGS += skia_use_dng_sdk=true
 SKIA_ARGS += skia_enable_fontmgr_win_gdi=false

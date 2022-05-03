@@ -1,6 +1,3 @@
-SKIA_ARGS += is_official_build=true
-SKIA_ARGS += skia_enable_tools=false
-SKIA_ARGS += target_cpu=\"$(SKIA_ARCH)\"
 SKIA_ARGS += target_os=\"linux\"
 SKIA_ARGS += extra_cflags=[\"-I$(SYSROOT)/$(PREFIX)/include\"]
 SKIA_ARGS += extra_ldflags=[\"-L$(SYSROOT)/$(PREFIX)/$(LIBDIR)\", \"-static-libstdc++\", \"-static-libgcc\" ]

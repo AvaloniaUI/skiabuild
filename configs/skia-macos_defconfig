@@ -1,0 +1,8 @@
+CONFIG_RECIPE:=skia
+CONFIG_VARIANT:=macos
+CLANG:=clang
+CLANGXX:=clang++
+CC:=clang
+SKIA_ARCH:=x64
+
+CONFIG_SKIACONFIG:=macos

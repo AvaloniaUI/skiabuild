@@ -1,5 +1,4 @@
 SKIA_ARGS += target_os=\"linux\"
-SKIA_ARGS += target_cpu=\"wasm\"
 # SKIA_ARGS += skia_enable_ccpr=false
 SKIA_ARGS += skia_enable_fontmgr_custom_directory=false
 SKIA_ARGS += skia_enable_fontmgr_custom_empty=false

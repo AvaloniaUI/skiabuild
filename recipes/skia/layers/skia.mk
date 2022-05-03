@@ -46,6 +46,9 @@ SKIA_ARGS += skia_enable_tools=false
 
 include $(RECIPE)/skia-config-$(CONFIG_SKIACONFIG).mk
 
+SKIA_ARGS += is_official_build=true
+SKIA_ARGS += skia_enable_tools=false
+SKIA_ARGS += target_cpu=\"$(SKIA_ARCH)\"
 SKIA_ARGS += cc=\"$(SKIA_CC)\"
 SKIA_ARGS += cxx=\"$(SKIA_CXX)\"
 SKIA_ARGS += ar=\"$(SKIA_AR)\"

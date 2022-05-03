@@ -11,6 +11,8 @@ SKIA_CC:=emcc
 SKIA_CXX:=em++
 SKIA_AR:=emar
 
+SKIA_ARCH:=wasm
+
 GN:=./bin/gn
 
 
