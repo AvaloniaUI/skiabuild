@@ -6,6 +6,7 @@ SKIA_GIT_REF?=main
 skia:=$(LSTAMP)/skia
 skia_sync_deps:=$(LSTAMP)/skia_sync_deps
 skia_config:=$(LSTAMP)/skia_config
+skia_describe:=$(BUILD)/$(L)/skia_defines.txt
 skia_install:=$(LSTAMP)/skia_install
 
 ifeq ($(CONFIG_SKIA_EMBEDDED_FONTS),y)
@@ -20,6 +21,7 @@ $(call git_clone, skia, https://github.com/google/skia.git, $(SKIA_GIT_REF))
 
 $(L) += $(skia_sync_deps)
 $(L) += $(skia_config)
+$(L) += $(skia_describe)
 $(L) += $(skia)
 ifeq ($(CONFIG_SKIA_EMBEDDED_FONTS),y)
 $(L) += $(skia_embedded_fonts)
@@ -67,6 +69,14 @@ $(skia_config): $(skia_sync_deps)
 	cd $(srcdir)/skia && $(TC_SOURCE) $(GN) gen $(builddir)/skia --args="$(SKIA_ARGS)"
 	$(stamp)
 
+.PHONY: gn_desc
+gn_desc: $(skia_describe)
+
+$(skia_describe):
+	mkdir -p $(dir $@)
+	cd $(srcdir)/skia && $(TC_SOURCE) $(GN) desc $(builddir)/skia :skia defines > $@
+
+
 $(skia): $(skia_config)
 	cd $(builddir)/skia && ninja $(BUILD_JOBS) $(SKIA_TARGET)
 	$(stamp)
@@ -107,6 +117,10 @@ endif
 ifndef WINDOWS
 $(skia_pkgconfig): $(skia_install)
 	cp $(BASE_skia)/skia.pc.in $@
+	for def in $(shell cat $(skia_describe)) ; do \
+		sed -i "s/^Cflags:.*/& -D$${def}/" $@ ; \
+	done
+
 endif
 
 $(L).clean:
