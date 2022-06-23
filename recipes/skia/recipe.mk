@@ -45,12 +45,13 @@ BUILD_JOBS=-j$$(distcc -j)
 endif
 endif
 
-MESON_OPTIONS:=
+MESON_OPTIONS:=-Ddefault_library=both
 
 LAYERS-$(CONFIG_MESON) += meson
 LAYERS-$(CONFIG_FREETYPE) += freetype
 LAYERS-$(CONFIG_FONTCONFIG) += fontconfig
 
+LAYERS-y += harfbuzz
 LAYERS-y += skia
 
 LAYERS-$(CONFIG_AVALONIA_SKIA) += avalonia_skia

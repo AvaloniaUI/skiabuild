@@ -17,6 +17,8 @@ ifndef WINDOWS
 skia_pkgconfig:=$(SYSROOT)/$(PREFIX)/$(LIBDIR)/pkgconfig/skia.pc $(PKGROOT)/$(PREFIX)/$(LIBDIR)/pkgconfig/skia.pc
 endif
 
+skia_cmake:=$(PKGROOT)/skia.cmake
+
 $(call git_clone, skia, https://github.com/google/skia.git, $(SKIA_GIT_REF))
 
 $(L) += $(skia_sync_deps)
@@ -28,6 +30,7 @@ $(L) += $(skia_embedded_fonts)
 endif
 $(L) += $(skia_install)
 $(L) += $(skia_pkgconfig)
+$(L) += $(skia_cmake)
 
 
 DEPENDS += fontconfig
@@ -122,6 +125,15 @@ $(skia_pkgconfig): $(skia_install)
 	done
 
 endif
+
+$(skia_cmake): $(skia_install)
+	cp $(BASE_skia)/skia.cmake.in $@
+	echo "set(SKIA_PREFIX $(PREFIX))" > $@
+	echo "set(SKIA_LIBDIR $(PREFIX)/lib64)" >> $@
+	for def in $(shell cat $(skia_describe)) ; do \
+		echo "list(APPEND SKIA_COMPILE_DEFINES -D$${def})" >> $@ ; \
+	done
+
 
 $(L).clean:
 	rm -rf $(builddir)
