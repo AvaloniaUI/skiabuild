@@ -24,6 +24,10 @@ jobs:
 
   build_windows:
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+
     steps:
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
