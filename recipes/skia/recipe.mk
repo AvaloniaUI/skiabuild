@@ -20,6 +20,11 @@ endif
 CLANG?=clang-13
 CLANGXX?=clang++-13
 
+ifdef WINDOWS
+export CC:=$(CLANG)
+export CXX:=$(CLANGXX)
+endif
+
 HOST:=$(shell $(CC) -dumpmachine)
 
 PREFIX:=usr/local
