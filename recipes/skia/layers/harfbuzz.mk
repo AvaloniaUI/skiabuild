@@ -7,8 +7,6 @@ $(call git_clone, harfbuzz, https://github.com/harfbuzz/harfbuzz.git, $(HARFBUZZ
 
 $(call meson, harfbuzz)
 
-
-
 include $(BUILD_LAYER)
 
 $(L).clean:
