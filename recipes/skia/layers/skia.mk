@@ -111,9 +111,12 @@ ifndef WINDOWS
 	cp $(builddir)/skia/libskia.a $(SYSROOT)/$(PREFIX)/$(LIBDIR)/
 	cp $(builddir)/skia/libskia.a $(PKGROOT)/$(PREFIX)/$(LIBDIR)/
 else
-	mkdir -p $(PKGROOT)/include/skia
-	cp -rv $(srcdir)/skia/include $(PKGROOT)/include/skia
-	cp $(builddir)/skia/skia.lib $(PKGROOT)
+	mkdir -p $(PKGROOT)/$(PREFIX)/include/skia
+	mkdir -p $(PKGROOT)/$(PREFIX)/$(LIBDIR)
+	cp -rv $(srcdir)/skia/include $(PKGROOT)/$(PREFIX)/include/skia
+	cp $(builddir)/skia/skia.lib $(PKGROOT)/$(PREFIX)/$(LIBDIR)/
+	cp $(SYSROOT)/$(PREFIX)/$(LIBDIR)/harfbuzz.lib $(PKGROOT)/$(PREFIX)/$(LIBDIR)/
+	cp -r $(SYSROOT)/$(PREFIX)/include/harfbuzz $(PKGROOT)/$(PREFIX)/include/
 endif
 	$(stamp)
 
