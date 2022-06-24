@@ -36,7 +36,7 @@ jobs:
       - run: ninja --version
       - run: make skia-win_x64_defconfig
       - run: make source-checkout
-      - run: make
+      - run: bash -c make
       - run: Compress-Archive -Path out/skia/win_x64/sysroot/ skia-win64.zip
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - uses: actions/upload-artifact@v3
