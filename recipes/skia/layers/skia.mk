@@ -115,7 +115,7 @@ else
 	mkdir -p $(PKGROOT)/$(PREFIX)/$(LIBDIR)
 	cp -rv $(srcdir)/skia/include $(PKGROOT)/$(PREFIX)/include/skia
 	cp $(builddir)/skia/skia.lib $(PKGROOT)/$(PREFIX)/$(LIBDIR)/
-	cp $(SYSROOT)/$(PREFIX)/$(LIBDIR)/harfbuzz.lib $(PKGROOT)/$(PREFIX)/$(LIBDIR)/
+	cp $(SYSROOT)/$(PREFIX)/$(LIBDIR)/libharfbuzz.a $(PKGROOT)/$(PREFIX)/$(LIBDIR)/
 	cp -r $(SYSROOT)/$(PREFIX)/include/harfbuzz $(PKGROOT)/$(PREFIX)/include/
 endif
 	$(stamp)
