@@ -32,7 +32,7 @@ jobs:
           submodules: 'recursive'
 
       - run: dir
-      - run: python3 -m pip install ninja
+      - run: python3 -m pip install ninja meson
       - run: ninja --version
       - run: make skia-win_x64_defconfig
       - run: make source-checkout
