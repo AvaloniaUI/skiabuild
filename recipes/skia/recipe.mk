@@ -47,6 +47,7 @@ endif
 
 MESON_OPTIONS:=-Ddefault_library=both
 
+LAYERS-y += prepare
 LAYERS-y += meson
 LAYERS-$(CONFIG_FREETYPE) += freetype
 LAYERS-$(CONFIG_FONTCONFIG) += fontconfig
