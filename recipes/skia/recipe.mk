@@ -21,8 +21,8 @@ CLANG?=clang-13
 CLANGXX?=clang++-13
 
 ifdef WINDOWS
-export CC:=clang-cl
-export CXX:=clang-cl
+export CC:=cl
+export CXX:=cl
 endif
 
 HOST:=$(shell $(CC) -dumpmachine)
