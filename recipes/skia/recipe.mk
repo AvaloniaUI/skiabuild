@@ -10,25 +10,25 @@ SYSROOT?=$(OUT)/buildroot
 #
 PKGROOT?=$(OUT)/sysroot
 
-ifeq ($(CC),cc)
-ifneq ($(shell which gcc-10 2> /dev/null),)
-export CC:=gcc-10
-export CXX:=g++-10
-endif
-endif
+
+PREFIX:=usr/local
+LIBDIR:=lib
 
 CLANG?=clang-13
 CLANGXX?=clang++-13
 
 ifdef WINDOWS
-export CC:=cl
-export CXX:=cl
+	export CC:=cl
+	export CXX:=cl
+else
+	ifeq ($(CC),cc)
+		ifneq ($(shell which gcc-10 2> /dev/null),)
+			export CC:=gcc-10
+			export CXX:=g++-10
+		endif
+	endif
+	HOST:=$(shell $(CC) -dumpmachine)
 endif
-
-HOST:=$(shell $(CC) -dumpmachine)
-
-PREFIX:=usr/local
-LIBDIR:=lib
 
 ifeq ($(HOST),x86_64-linux-gnu)
 LIBDIR:=lib64

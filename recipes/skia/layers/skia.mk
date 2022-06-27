@@ -34,6 +34,7 @@ $(L) += $(skia_cmake)
 
 
 DEPENDS += fontconfig
+DEPENDS += harfbuzz
 
 
 include $(BUILD_LAYER)
@@ -110,12 +111,14 @@ ifndef WINDOWS
 	cp -rv $(srcdir)/skia/include $(PKGROOT)/$(PREFIX)/include/skia
 	cp $(builddir)/skia/libskia.a $(SYSROOT)/$(PREFIX)/$(LIBDIR)/
 	cp $(builddir)/skia/libskia.a $(PKGROOT)/$(PREFIX)/$(LIBDIR)/
+	cp $(SYSROOT)/$(PREFIX)/$(LIBDIR)/libharfbuzz.a $(PKGROOT)/$(PREFIX)/$(LIBDIR)/
+	cp -r $(SYSROOT)/$(PREFIX)/include/harfbuzz $(PKGROOT)/$(PREFIX)/include/
 else
 	mkdir -p $(PKGROOT)/$(PREFIX)/include/skia
 	mkdir -p $(PKGROOT)/$(PREFIX)/$(LIBDIR)
 	cp -rv $(srcdir)/skia/include $(PKGROOT)/$(PREFIX)/include/skia
 	cp $(builddir)/skia/skia.lib $(PKGROOT)/$(PREFIX)/$(LIBDIR)/
-	cp $(SYSROOT)/lib/libharfbuzz.a $(PKGROOT)/$(PREFIX)/$(LIBDIR)/
+	cp $(SYSROOT)/$(LIBDIR)/libharfbuzz.a $(PKGROOT)/$(PREFIX)/$(LIBDIR)/
 	cp -r $(SYSROOT)/include/harfbuzz $(PKGROOT)/$(PREFIX)/include/
 endif
 	$(stamp)
@@ -132,7 +135,7 @@ endif
 $(skia_cmake): $(skia_install)
 	cp $(BASE_skia)/skia.cmake.in $@
 	echo "set(SKIA_PREFIX $(PREFIX))" > $@
-	echo "set(SKIA_LIBDIR $(PREFIX)/lib64)" >> $@
+	echo "set(SKIA_LIBDIR $(PREFIX)/$(LIBDIR))" >> $@
 	for def in $(shell cat $(skia_describe)) ; do \
 		echo "list(APPEND SKIA_COMPILE_DEFINES -D$${def})" >> $@ ; \
 	done
